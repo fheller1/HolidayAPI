@@ -1,12 +1,11 @@
 package com.holidayapi;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import com.holidayapi.Model.Holiday;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashSet;
 
 @RestController
 public class HolidayController {
-    @GetMapping("/date")
-    public String todayDate() {
-        return java.time.LocalDate.now().toString();
-    }
+    private HashSet<HashSet<Holiday>> years;
 }
