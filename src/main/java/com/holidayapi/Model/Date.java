@@ -1,11 +1,18 @@
 package com.holidayapi.Model;
 
+import lombok.Builder;
+import lombok.Data;
+import org.jetbrains.annotations.NotNull;
+
+@Data
+@Builder
 public class Date {
     private int day;
     private int month;
     private int year;
+    private boolean isHoliday;
 
-    public Date(String dateString) throws IllegalArgumentException {
+    public Date(@NotNull String dateString) throws IllegalArgumentException {
         if(!dateString.matches("/[0-9]{4}-[0-9]{2}-[0-9]{2}/"))
             throw new IllegalArgumentException("Given String does not represent a date!");
         year = Integer.parseInt(dateString.substring(0,3));
@@ -25,6 +32,32 @@ public class Date {
             year % 4 != 0 && month == 2 && day > 28
         ) return false;
         return true;
+    }
+
+    public boolean isBefore(@NotNull Date other) {
+        if(this.year > other.getYear()) return false;
+        if(this.year < other.getYear()) return true;
+        if(this.month > other.getMonth()) return false;
+        if(this.month < other.getMonth()) return true;
+        if(this.day > other.getDay()) return false;
+        if(this.day < other.getDay()) return true;
+        return false;
+    }
+
+    public boolean isAfter(@NotNull Date other) {
+        if(this.year < other.getYear()) return false;
+        if(this.year > other.getYear()) return true;
+        if(this.month < other.getMonth()) return false;
+        if(this.month > other.getMonth()) return true;
+        if(this.day < other.getDay()) return false;
+        if(this.day > other.getDay()) return true;
+        return false;
+    }
+
+    public boolean equals(@NotNull Date other) {
+        return this.year == other.getYear() &&
+                this.month == other.getMonth() &&
+                this.day == other.getDay();
     }
 
     @Override
