@@ -5,12 +5,11 @@ import org.jetbrains.annotations.NotNull;
 
 public class Date {
     @Getter
-    private int day;
+    private Integer day;
     @Getter
-    private int month;
+    private Integer month;
     @Getter
-    private int year;
-    private boolean isHoliday;
+    private Integer year;
 
     public Date(@NotNull String dateString) throws IllegalArgumentException {
         if(!dateString.matches("\\d{4}-\\d{2}-\\d{2}"))
@@ -20,6 +19,14 @@ public class Date {
         day = Integer.parseInt(dateString.substring(8, 10));
         if(!isValidDate(year, month, day))
             throw new IllegalArgumentException("Given String " + dateString + " represents an invalid date!");
+    }
+
+    public Date(int year, int month, int day) {
+        if(!isValidDate(year, month, day))
+            throw new IllegalArgumentException("Given Integers represent an invalid date!");
+        this.year = year;
+        this.month = month;
+        this.day = day;
     }
 
     public static boolean isValidDate(int year, int month, int day) {
