@@ -55,4 +55,21 @@ public class DateTests {
         Assertions.assertTrue(d1.isAfter(d0));
         Assertions.assertFalse(d0.isAfter(d0));
     }
+
+    @Test
+    void testDaysInMonth() {
+        Assertions.assertEquals(31, Date.daysInMonth(2023, 3));
+        Assertions.assertEquals(31, Date.daysInMonth(2023, 12));
+        Assertions.assertEquals(30, Date.daysInMonth(2023, 6));
+        Assertions.assertEquals(30, Date.daysInMonth(2023, 9));
+        Assertions.assertEquals(28, Date.daysInMonth(2023, 2));
+        Assertions.assertEquals(29, Date.daysInMonth(2024, 2));
+    }
+
+    @Test
+    void testPlusDays() {
+        d0 = new Date("2023-03-25");
+        Assertions.assertEquals(new Date("2023-03-26"), d0.plusDays(1));
+        Assertions.assertEquals(new Date("2023-04-01"), d0.plusDays(7));
+    }
 }

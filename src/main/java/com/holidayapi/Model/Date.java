@@ -5,13 +5,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class Date {
     @Getter
-    private Integer day;
+    private int day;
     @Getter
-    private Integer month;
+    private int month;
     @Getter
-    private Integer year;
+    private int year;
 
-    public Date(@NotNull String dateString) throws IllegalArgumentException {
+    public Date(@NotNull String dateString) {
         if(!dateString.matches("\\d{4}-\\d{2}-\\d{2}"))
             throw new IllegalArgumentException("Given String " + dateString + " does not represent a date!");
         year = Integer.parseInt(dateString.substring(0, 4));
@@ -41,6 +41,41 @@ public class Date {
         return true;
     }
 
+    /**
+     * Calculates the date <code>days</code> days after <code>this</code>. Returns the calculated date and does not
+     * change <code>this</code>.
+     * @param days to add to <code>this</code>
+     * @return new <code>Date</code> object <code>days</code> days in the future of <code>this</code>
+     */
+    public Date plusDays(int days) {
+        int newYear = year;
+        int newMonth = month;
+        int newDay = day + days;
+        while(newDay > daysInMonth(newYear, newMonth)) {
+            newDay -= daysInMonth(newYear, newMonth);
+            if(newMonth == 12) {
+                newMonth = 1;
+                newYear++;
+            }
+            else {
+                newMonth++;
+            }
+        }
+        return new Date(newYear, newMonth, newDay);
+    }
+
+    /**
+     * Returns the number of days in a given month in a given year
+     * @param year
+     * @param month
+     * @return days in the provided month
+     */
+    public static int daysInMonth(int year, int month) {
+        if(month == 2) return year % 4 == 0 ? 29 : 28;
+        if(month < 8 && month % 2 == 1 || month > 7 && month % 2 == 0) return 31;
+        return 30;
+    }
+
     public boolean isBefore(@NotNull Date other) {
         if(this.year > other.getYear()) return false;
         if(this.year < other.getYear()) return true;
@@ -61,7 +96,10 @@ public class Date {
         return false;
     }
 
-    public boolean equals(@NotNull Date other) {
+    @Override
+    public boolean equals(Object object) {
+        if(object.getClass() != Date.class) return false;
+        Date other = (Date) object;
         return this.year == other.getYear() &&
                 this.month == other.getMonth() &&
                 this.day == other.getDay();
