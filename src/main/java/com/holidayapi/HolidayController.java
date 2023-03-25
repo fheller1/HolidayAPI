@@ -85,8 +85,33 @@ public class HolidayController {
         return holidays;
     }
 
+    /**
+     * This method implements the Gauss' Easter formula and returns the date of Easter sunday in the given year
+     * @param year year to determine Easter sunday's date for
+     * @return Date object of Easter sunday in the given year
+     */
+    @GetMapping("/getEasterSunday")
+    private static Date getEasterSunday(@RequestParam Integer year) {
+        int a = year % 19;
+        int b = year % 4;
+        int c = year % 7;
+        int k = year / 100;
+        int p = (8 * k + 13) / 25;
+        int q = k / 4;
+        int M = (15 + k - p - q) % 30;
+        int d = (19 * a + M) % 30;
+        int N = (4 + k - q) % 7;
+        int e = (2 * b + 4 * c + 6 * d + N) % 7;
+        int easterDay = 22 + d + e;
+        if(d == 29 && e == 6) easterDay = 50;
+        if(d == 28 && e == 6 && a > 10) easterDay = 49;
+        return easterDay < 32
+                ? new Date(year, 3, easterDay)
+                : new Date(year, 4, easterDay - 31);
+    }
+
     @GetMapping("/date")
-    public String todayDate() {
+    private String todayDate() {
         return java.time.LocalDate.now().toString();
     }
 }
