@@ -65,6 +65,29 @@ public class Date {
     }
 
     /**
+     * Calculates the date <code>days</code> days before <code>this</code>. Returns the calculated date and does not
+     * change <code>this</code>.
+     * @param days to subtract from <code>this</code>
+     * @return new <code>Date</code> object <code>days</code> days in the past of <code>this</code>
+     */
+    public Date minusDays(int days) {
+        int newYear = year;
+        int newMonth = month;
+        int newDay = day - days;
+        while(newDay < 1) {
+            if(newMonth == 1) {
+                newMonth = 12;
+                newYear--;
+            }
+            else {
+                newMonth--;
+            }
+            newDay += daysInMonth(newYear, newMonth);
+        }
+        return new Date(newYear, newMonth, newDay);
+    }
+
+    /**
      * Returns the number of days in a given month in a given year
      * @param year
      * @param month

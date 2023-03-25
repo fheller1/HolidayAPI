@@ -13,9 +13,10 @@ import java.util.List;
 @RestController
 public class HolidayController {
 
-    @GetMapping("/getFixed")
-    private static List<Holiday> getFixedHolidays(@RequestParam Integer year) {
+    @GetMapping("/holidays")
+    private static List<Holiday> getHolidays(@RequestParam Integer year) {
         ArrayList<Holiday> holidays = new ArrayList<>();
+        Date easterSunday = getEasterSunday(year);
         holidays.add(new Holiday(
                 new Date(year, 1, 1),
                 "Neujahr",
@@ -35,10 +36,52 @@ public class HolidayController {
                 false
         ));
         holidays.add(new Holiday(
+                easterSunday.minusDays(2),
+                "Karfreitag",
+                List.of(),
+                true
+        ));
+        holidays.add(new Holiday(
+                easterSunday,
+                "Ostersonntag",
+                List.of(germanState.BB),
+                false
+        ));
+        holidays.add(new Holiday(
+                easterSunday,
+                "Ostermontag",
+                List.of(),
+                true
+        ));
+        holidays.add(new Holiday(
                 new Date(year, 5, 1),
                 "Tag der Arbeit",
                 List.of(),
                 true
+        ));
+        holidays.add(new Holiday(
+                easterSunday.plusDays(39),
+                "Christi Himmelfahrt",
+                List.of(),
+                true
+        ));
+        holidays.add(new Holiday(
+                easterSunday.plusDays(48),
+                "Pfingstsonntag",
+                List.of(germanState.BB),
+                false
+        ));
+        holidays.add(new Holiday(
+                easterSunday.plusDays(49),
+                "Pfingstmontag",
+                List.of(),
+                true
+        ));
+        holidays.add(new Holiday(
+                easterSunday.plusDays(60),
+                "Fronleichnam",
+                List.of(germanState.BW, germanState.BY, germanState.HE, germanState.NW, germanState.RP, germanState.SL),
+                false
         ));
         holidays.add(new Holiday(
                 new Date(year, 8, 15),
@@ -71,6 +114,13 @@ public class HolidayController {
                 false
         ));
         holidays.add(new Holiday(
+                //TODO
+                new Date(year, 01, 01),
+                "Buß- und Bettag",
+                List.of(germanState.SN),
+                false
+        ));
+        holidays.add(new Holiday(
                 new Date(year, 12, 25),
                 "1. Weihnachtsfeiertag",
                 List.of(),
@@ -90,7 +140,6 @@ public class HolidayController {
      * @param year year to determine Easter sunday's date for
      * @return Date object of Easter sunday in the given year
      */
-    @GetMapping("/getEasterSunday")
     private static Date getEasterSunday(@RequestParam Integer year) {
         int a = year % 19;
         int b = year % 4;
