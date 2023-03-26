@@ -24,7 +24,7 @@ public class HolidayController {
                 true
         ));
         holidays.add(new Holiday(
-                new Date(year, 1, 1),
+                new Date(year, 1, 6),
                 "Heilige Drei Könige",
                 List.of(germanState.BY, germanState.BW, germanState.SH),
                 false
@@ -48,7 +48,7 @@ public class HolidayController {
                 false
         ));
         holidays.add(new Holiday(
-                easterSunday,
+                easterSunday.plusDays(1),
                 "Ostermontag",
                 List.of(),
                 true
@@ -66,13 +66,13 @@ public class HolidayController {
                 true
         ));
         holidays.add(new Holiday(
-                easterSunday.plusDays(48),
+                easterSunday.plusDays(49),
                 "Pfingstsonntag",
                 List.of(germanState.BB),
                 false
         ));
         holidays.add(new Holiday(
-                easterSunday.plusDays(49),
+                easterSunday.plusDays(50),
                 "Pfingstmontag",
                 List.of(),
                 true
