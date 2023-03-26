@@ -29,6 +29,10 @@ public class Date {
         this.day = day;
     }
 
+    /**
+     * Checks the validity of a given Date, i.e. if year, month, and day are non-negative, month not larger than 12, and
+     * day not larger than the number of days in the specified month.
+     */
     public static boolean isValidDate(int year, int month, int day) {
         if(
             year < 0 ||
@@ -89,9 +93,9 @@ public class Date {
 
     /**
      * Returns the number of days in a given month in a given year
-     * @param year
-     * @param month
-     * @return days in the provided month
+     * @param year given year
+     * @param month given month
+     * @return number of days in the provided month
      */
     public static int daysInMonth(int year, int month) {
         if(month == 2) return year % 4 == 0 ? 29 : 28;

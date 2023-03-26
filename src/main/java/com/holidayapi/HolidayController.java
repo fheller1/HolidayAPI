@@ -114,8 +114,7 @@ public class HolidayController {
                 false
         ));
         holidays.add(new Holiday(
-                //TODO
-                new Date(year, 01, 01),
+                getBussUndBettag(easterSunday),
                 "Buß- und Bettag",
                 List.of(germanState.SN),
                 false
@@ -136,7 +135,7 @@ public class HolidayController {
     }
 
     /**
-     * This method implements the Gauss' Easter formula and returns the date of Easter sunday in the given year
+     * This method implements Gauss' Easter formula and returns the date of Easter sunday in the given year
      * @param year year to determine Easter sunday's date for
      * @return Date object of Easter sunday in the given year
      */
@@ -159,8 +158,17 @@ public class HolidayController {
                 : new Date(year, 4, easterDay - 31);
     }
 
-    @GetMapping("/date")
-    private String todayDate() {
-        return java.time.LocalDate.now().toString();
+    /**
+     * This method returns the Date of Buss- und Bettag in the year of the given Easter sunday. Buss- und Bettag will be
+     * on the last Wednesday before 23rd of November.
+     * @param easterSunday of a given year
+     * @return Date of Buss- und Bettag
+     */
+    private static Date getBussUndBettag(Date easterSunday) {
+        Date result = easterSunday.plusDays(3);
+        while(result.isBefore(new Date(easterSunday.getYear(), 11, 16))) {
+            result = result.plusDays(7);
+        }
+        return result;
     }
 }
