@@ -3,7 +3,9 @@ package com.holidayapi.Model;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
-public class Date {
+import java.util.Comparator;
+
+public class Date implements Comparable<Date> {
     @Getter
     private int day;
     @Getter
@@ -103,24 +105,23 @@ public class Date {
         return 30;
     }
 
+    @Override
+    public int compareTo(@NotNull Date o) {
+        if(o.getYear() > this.year) return -1;
+        if(o.getYear() < this.year) return 1;
+        if(o.getMonth() > this.month) return -1;
+        if(o.getMonth() < this.month) return 1;
+        if(o.getDay() > this.day) return -1;
+        if(o.getDay() < this.day) return 1;
+        return 0;
+    }
+
     public boolean isBefore(@NotNull Date other) {
-        if(this.year > other.getYear()) return false;
-        if(this.year < other.getYear()) return true;
-        if(this.month > other.getMonth()) return false;
-        if(this.month < other.getMonth()) return true;
-        if(this.day > other.getDay()) return false;
-        if(this.day < other.getDay()) return true;
-        return false;
+        return this.compareTo(other) == -1;
     }
 
     public boolean isAfter(@NotNull Date other) {
-        if(this.year < other.getYear()) return false;
-        if(this.year > other.getYear()) return true;
-        if(this.month < other.getMonth()) return false;
-        if(this.month > other.getMonth()) return true;
-        if(this.day < other.getDay()) return false;
-        if(this.day > other.getDay()) return true;
-        return false;
+        return this.compareTo(other) == 1;
     }
 
     @Override
@@ -136,4 +137,5 @@ public class Date {
     public String toString() {
         return year + "-" + month + "-" + day;
     }
+
 }

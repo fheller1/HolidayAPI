@@ -4,10 +4,12 @@ import com.holidayapi.Model.Date;
 import com.holidayapi.Model.Holiday;
 import com.holidayapi.Model.germanStateEnum.germanState;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -131,7 +133,21 @@ public class HolidayController {
                 List.of(),
                 true
         ));
+        Collections.sort(holidays);     //by date
+
         return holidays;
+    }
+
+    @GetMapping("/holidays/{state}")
+    private static List<Holiday> getByState(@PathVariable("state") String state, @RequestParam Integer year) {
+        germanState selState = germanState.valueOf(state);
+
+        List<Holiday> stateHolidays = getHolidays(year)
+                .stream()
+                .filter(holiday -> holiday.getIsGlobalHoliday() || holiday.getStates().contains(selState))
+                .toList();
+
+        return stateHolidays;
     }
 
     /**
@@ -139,7 +155,7 @@ public class HolidayController {
      * @param year year to determine Easter sunday's date for
      * @return Date object of Easter sunday in the given year
      */
-    private static Date getEasterSunday(@RequestParam Integer year) {
+    private static Date getEasterSunday(Integer year) {
         int a = year % 19;
         int b = year % 4;
         int c = year % 7;

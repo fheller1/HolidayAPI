@@ -3,7 +3,9 @@ package com.holidayapi.Model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -13,9 +15,14 @@ import java.util.List;
 @Data
 @Builder
 @AllArgsConstructor
-public class Holiday {
+public class Holiday implements Comparable<Holiday> {
     private Date date;
     private String name;
     private List<germanStateEnum.germanState> states;
     private Boolean isGlobalHoliday;
+
+    @Override
+    public int compareTo(@NotNull Holiday o) {
+        return this.date.compareTo(o.getDate());
+    }
 }
